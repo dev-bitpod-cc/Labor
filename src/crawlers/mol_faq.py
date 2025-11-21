@@ -47,7 +47,8 @@ class MOLFaqCrawler(BaseLaborCrawler):
         Returns:
             列表頁 URL
         """
-        return self.list_url
+        # MOL 使用 URL 參數分頁: ?Page=1&PageSize=10
+        return f"{self.list_url}?Page={page}&PageSize=10"
 
     def parse_list_page(self, html: str) -> List[Dict[str, Any]]:
         """
@@ -229,15 +230,23 @@ class MOLFaqCrawler(BaseLaborCrawler):
                 detail['answer'] = {'text': '', 'html': ''}
                 detail['related_laws'] = []
 
-            # 提取分類（從麵包屑或側邊欄）
-            breadcrumb = soup.select('.breadcrumb a, nav a')
-            if breadcrumb and len(breadcrumb) >= 2:
-                # 通常最後第二個是主分類
+            # 提取分類（從麵包屑）
+            # 使用 .breadcrumb a（不包含 nav，避免選到所有導航連結）
+            breadcrumb = soup.select('div.breadcrumb a')
+            if breadcrumb and len(breadcrumb) >= 4:
+                # 麵包屑結構：[首頁, 便民服務, 常見問答, 主分類, 次分類?]
+                # breadcrumb[-2] = 主分類（如「勞動關係」）
+                # breadcrumb[-1] = 次分類（如「勞動契約」）
                 main_category = clean_text(breadcrumb[-2].get_text())
-                if main_category and main_category != '常見問答':
+                sub_category = clean_text(breadcrumb[-1].get_text())
+
+                # 使用次分類作為主分類（更具體）
+                if sub_category and sub_category not in ['首頁', '便民服務', '常見問答']:
+                    detail['category'] = sub_category
+                elif main_category and main_category not in ['首頁', '便民服務', '常見問答']:
                     detail['category'] = main_category
 
-            # 如果沒有分類，使用次分類作為主分類
+            # 如果麵包屑未提取到分類，使用原有的 subcategory
             if 'category' not in detail and detail.get('subcategory'):
                 detail['category'] = detail['subcategory']
 

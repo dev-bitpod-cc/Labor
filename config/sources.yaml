@@ -19,7 +19,7 @@ sources:
 
   osha_faq:
     name: "職安署常見問答"
-    list_url: "https://www.osha.gov.tw/48110/48461/48463/nodelist"
+    index_url: "https://www.osha.gov.tw/48110/48461/48463/nodelist"
     base_url: "https://www.osha.gov.tw"
     structure: "category_list_paginated"
     categories: 10

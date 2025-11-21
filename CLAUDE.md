@@ -13,31 +13,47 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 最新狀態 (2025-11-21)
 
 ### ✅ 已完成
-- 網站結構分析（勞動部、勞保局、職安署）
-- 技術文檔撰寫（WEBSITE_ANALYSIS.md, SUMMARY.md）
-- 專案目錄結構建立
-- 可行性評估（3/4 網站可爬取）
 
-### ⏭️ 待實作
-- 爬蟲基礎架構
-- 勞動部常見問答爬蟲（P0 優先）
-- 勞保局常見問答爬蟲（P0 優先）
-- 職安署常見問答爬蟲（P1）
-- Plain Text 優化器
-- Gemini 上傳功能
+**爬蟲實作**
+- 勞動部常見問答爬蟲 (`src/crawlers/mol_faq.py`) - 383 筆
+- 勞保局常見問答爬蟲 (`src/crawlers/bli_faq.py`) - 987 筆
+- 職安署常見問答爬蟲 (`src/crawlers/osha_faq.py`) - 124 筆（支援多層結構）
+- **總計: 1,494 筆 FAQ**
+
+**資料處理**
+- Plain Text 優化器 (`src/processor/faq_plaintext_optimizer.py`)
+- 優化後檔案: `data/plaintext_optimized/faq_individual/` (6.3 MB)
+
+**Gemini 上傳**
+- 上傳腳本 (`scripts/upload_faq_to_gemini.py`)
+- File Search Store: `fileSearchStores/laborfaq-ich1zaoo2nmw`
+- Store 名稱: `labor-faq`
+- 上傳進行中 (預計 3-4 小時完成)
+
+**查詢前台**
+- 專案: `~/Projects/Labor-FAQ-Deploy`
+- GitHub: `git@github.com:dev-bitpod-cc/labor-faq.git`
+- 已推送到 GitHub，待部署到 Streamlit Cloud
+
+### ⏳ 進行中
+- Gemini 上傳 (1,494 筆，約 6.6% 完成)
+
+### ⏭️ 待完成
+- Streamlit Cloud 部署
+- 查詢效果驗證
 
 ---
 
 ## 資料來源
 
-| 網站 | 資料量 | 可爬取 | 優先級 | 備註 |
-|------|--------|--------|--------|------|
-| 勞動部常見問答 | ~383 筆 | ✅ | P0 | 表格式列表，有分頁 |
-| 勞保局常見問答 | ~200-300 筆 | ✅ | P0 | 樹狀結構，無分頁 |
-| 職安署常見問答 | ~140 筆 | ✅ | P1 | 分類列表，有分頁 |
-| ~~健保署常見問答~~ | 未知 | ❌ | - | Cloudflare 阻擋，已放棄 |
+| 網站 | 資料量 | 狀態 | 備註 |
+|------|--------|------|------|
+| 勞動部常見問答 (MOL) | 383 筆 | ✅ 完成 | 表格式列表，39 頁 |
+| 勞動部勞工保險局 (BLI) | 987 筆 | ✅ 完成 | 樹狀結構，遞迴爬取 |
+| 職業安全衛生署 (OSHA) | 124 筆 | ✅ 完成 | 多層分類結構 |
+| ~~健保署常見問答~~ | - | ❌ 放棄 | Cloudflare 阻擋 |
 
-**總計**: 約 700-800 筆勞動法規常見問答
+**總計**: **1,494 筆**勞動法規常見問答
 
 ---
 
@@ -310,23 +326,24 @@ gemini:
 
 ---
 
-## 待實作功能
+## 功能狀態
 
-### P0 核心功能（優先）
-- [ ] 勞動部常見問答爬蟲 (`src/crawlers/mol_faq.py`)
-- [ ] 勞保局常見問答爬蟲 (`src/crawlers/bli_faq.py`)
-- [ ] Plain Text 優化器 (`src/processor/labor_plaintext_optimizer.py`)
-- [ ] Gemini 上傳功能 (`scripts/upload_to_gemini.py`)
+### ✅ 已完成
+- [x] 勞動部常見問答爬蟲 (`src/crawlers/mol_faq.py`) - 383 筆
+- [x] 勞保局常見問答爬蟲 (`src/crawlers/bli_faq.py`) - 987 筆
+- [x] 職安署常見問答爬蟲 (`src/crawlers/osha_faq.py`) - 124 筆
+- [x] Plain Text 優化器 (`src/processor/faq_plaintext_optimizer.py`)
+- [x] Gemini 上傳功能 (`scripts/upload_faq_to_gemini.py`)
+- [x] 查詢前台 Streamlit (`~/Projects/Labor-FAQ-Deploy`)
 
-### P1 補充功能
-- [ ] 職安署常見問答爬蟲 (`src/crawlers/osha_faq.py`)
+### ⏳ 進行中
+- [ ] Gemini 上傳 (1,494 筆)
+- [ ] Streamlit Cloud 部署
+
+### 📋 待完成
 - [ ] 增量更新機制
-- [ ] RAG 查詢介面
-
-### P2 進階功能
 - [ ] 相關法規連結提取與標準化
 - [ ] 問答關聯分析
-- [ ] 自動分類優化
 
 ---
 
