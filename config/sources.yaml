@@ -1,0 +1,52 @@
+# 勞動法規資料源配置
+
+sources:
+  mol_faq:
+    name: "勞動部常見問答"
+    list_url: "https://www.mol.gov.tw/1607/28690/2282/nodeListSearch"
+    base_url: "https://www.mol.gov.tw"
+    structure: "table_paginated"
+    total_pages: 39
+    items_per_page: 10
+    priority: 0  # P0 核心資料源
+
+  bli_faq:
+    name: "勞保局常見問答"
+    list_url: "https://www.bli.gov.tw/0100603.html"
+    base_url: "https://www.bli.gov.tw"
+    structure: "tree"
+    priority: 0  # P0 核心資料源
+
+  osha_faq:
+    name: "職安署常見問答"
+    list_url: "https://www.osha.gov.tw/48110/48461/48463/nodelist"
+    base_url: "https://www.osha.gov.tw"
+    structure: "category_list_paginated"
+    categories: 10
+    priority: 1  # P1 補充資料源
+
+# 分類映射表 (用於標準化)
+category_mapping:
+  # 勞動部分類
+  "勞動契約": "labor_contract"
+  "工資": "wages"
+  "工時": "working_hours"
+  "休假": "leave"
+  "退休": "retirement"
+  "職業災害": "occupational_injury"
+  "就業服務": "employment_service"
+  "勞資爭議": "labor_dispute"
+
+  # 勞保局分類
+  "勞工保險": "labor_insurance"
+  "就業保險": "employment_insurance"
+  "職業災害保險": "occupational_injury_insurance"
+  "勞工退休金": "labor_pension"
+  "國民年金": "national_pension"
+
+  # 職安署分類
+  "職業安全衛生管理": "osh_management"
+  "作業環境監測": "work_environment_monitoring"
+  "化學品管理": "chemical_management"
+  "勞工健康服務": "worker_health_service"
+  "安全衛生教育訓練": "osh_training"

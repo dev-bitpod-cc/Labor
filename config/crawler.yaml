@@ -1,0 +1,45 @@
+# 爬蟲配置
+
+http:
+  timeout: 30  # 秒
+  interval: 2.0  # 請求間隔（秒）
+  retries: 3  # 重試次數
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+storage:
+  format: "jsonl"
+  encoding: "utf-8"
+  data_dir: "data"
+
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name}:{function}:{line} - {message}"
+  rotation: "100 MB"
+  retention: "30 days"
+
+gemini:
+  store_name: "labor-faqs"
+  chunk_size: 2048
+  delay: 2.0  # 上傳延遲（秒）
+
+# Plain Text 優化設定
+plaintext:
+  # 要移除的網頁雜訊關鍵字
+  noise_keywords:
+    - "FACEBOOK"
+    - "facebook"
+    - "Line"
+    - "line"
+    - "Twitter"
+    - "twitter"
+    - "友善列印"
+    - "列印"
+    - "回上頁"
+    - "上一頁"
+    - "瀏覽人次"
+    - "點閱數"
+    - "更新日期"
+    - "分享至"
+    - "Share"
+    - "Print"
+    - "::::"  # 網站導航符號
