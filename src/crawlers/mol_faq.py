@@ -144,12 +144,26 @@ class MOLFaqCrawler(BaseLaborCrawler):
                 detail['question'] = question
 
             # 提取答案內容
-            # 查找主要內容區域
+            # 查找主要內容區域（根據 WebFetch 分析更新選擇器）
             content_area = None
-            for selector in ['div.page_content', 'div.content', 'div.article', 'div#content', 'main']:
-                content_area = soup.select_one(selector)
-                if content_area:
-                    break
+
+            # 策略 1: 嘗試找 <article> 標籤
+            content_area = soup.find('article')
+
+            # 策略 2: 如果沒有 article，找 <h2> 的父容器
+            if not content_area and question_elem:
+                # 向上找到包含完整內容的容器（通常是 div 或 main）
+                parent = question_elem.parent
+                while parent and parent.name not in ['body', 'html']:
+                    # 檢查是否包含多個 p 標籤（表示這是內容容器）
+                    if len(parent.find_all('p')) >= 1:
+                        content_area = parent
+                        break
+                    parent = parent.parent
+
+            # 策略 3: 最後嘗試找 main 標籤
+            if not content_area:
+                content_area = soup.find('main')
 
             if content_area:
                 # 提取純文字答案
