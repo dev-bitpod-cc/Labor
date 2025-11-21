@@ -166,16 +166,40 @@ class MOLFaqCrawler(BaseLaborCrawler):
                 content_area = soup.find('main')
 
             if content_area:
-                # 提取純文字答案
-                answer_text = content_area.get_text(separator='\n', strip=True)
+                # 優先從 <table> 的「答案」欄位提取（更精確，無雜訊）
+                answer_text = ''
+                answer_html = ''
 
-                # 清理答案（移除問題部分）
-                if detail.get('question'):
-                    answer_text = answer_text.replace(detail['question'], '', 1).strip()
+                table = content_area.find('table')
+                if table:
+                    # 找到「答案」的 th，使用正則表達式匹配
+                    import re
+                    answer_th = None
+                    for th in table.find_all('th'):
+                        if re.search(r'答案', th.get_text()):
+                            answer_th = th
+                            break
+
+                    if answer_th:
+                        # 取得下一個 td
+                        answer_td = answer_th.find_next('td')
+                        if answer_td:
+                            # 提取純文字（從 <p> 或直接從 <td>）
+                            answer_text = answer_td.get_text(separator='\n', strip=True)
+                            answer_html = str(answer_td)[:10000]
+
+                # 如果沒有找到 table 或答案欄位，使用整個內容區域
+                if not answer_text:
+                    answer_text = content_area.get_text(separator='\n', strip=True)
+                    answer_html = str(content_area)[:10000]
+
+                    # 清理答案（移除問題部分）
+                    if detail.get('question'):
+                        answer_text = answer_text.replace(detail['question'], '', 1).strip()
 
                 detail['answer'] = {
                     'text': answer_text,
-                    'html': str(content_area)[:10000]  # 保留部分 HTML
+                    'html': answer_html
                 }
 
                 # 提取相關法規連結
