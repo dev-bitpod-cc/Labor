@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
-## 最新狀態 (2025-11-21)
+## 最新狀態 (2025-11-26)
 
 ### ✅ 已完成
 
@@ -28,19 +28,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 上傳腳本 (`scripts/upload_faq_to_gemini.py`)
 - File Search Store: `fileSearchStores/laborfaq-ich1zaoo2nmw`
 - Store 名稱: `labor-faq`
-- 上傳進行中 (預計 3-4 小時完成)
+- 已上傳 1,490 筆 (4 筆上傳失敗)
 
 **查詢前台**
 - 專案: `~/Projects/Labor-FAQ-Deploy`
 - GitHub: `git@github.com:dev-bitpod-cc/labor-faq.git`
-- 已推送到 GitHub，待部署到 Streamlit Cloud
+- 已部署到 Streamlit Cloud
 
-### ⏳ 進行中
-- Gemini 上傳 (1,494 筆，約 6.6% 完成)
+**映射表**
+- `faq_file_mapping.json` - 1,494 筆 FAQ 的原始連結映射
+- `faq_gemini_id_mapping.json` - Gemini file ID 到 doc_id 的映射
+- 支援參考來源顯示原始連結
 
-### ⏭️ 待完成
-- Streamlit Cloud 部署
-- 查詢效果驗證
+### 📋 待完成
+- 增量更新機制
+- 查詢效果優化
 
 ---
 
@@ -333,12 +335,10 @@ gemini:
 - [x] 勞保局常見問答爬蟲 (`src/crawlers/bli_faq.py`) - 987 筆
 - [x] 職安署常見問答爬蟲 (`src/crawlers/osha_faq.py`) - 124 筆
 - [x] Plain Text 優化器 (`src/processor/faq_plaintext_optimizer.py`)
-- [x] Gemini 上傳功能 (`scripts/upload_faq_to_gemini.py`)
+- [x] Gemini 上傳功能 (`scripts/upload_faq_to_gemini.py`) - 1,490 筆已上傳
 - [x] 查詢前台 Streamlit (`~/Projects/Labor-FAQ-Deploy`)
-
-### ⏳ 進行中
-- [ ] Gemini 上傳 (1,494 筆)
-- [ ] Streamlit Cloud 部署
+- [x] Streamlit Cloud 部署
+- [x] 原始連結映射表 (`faq_file_mapping.json`, `faq_gemini_id_mapping.json`)
 
 ### 📋 待完成
 - [ ] 增量更新機制
